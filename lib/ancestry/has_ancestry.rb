@@ -115,6 +115,7 @@ module Ancestry
         format_module, column, root,
         integer_pk: integer_pk,
         depth_cache_column: depth_cache_column,
+        depth_cache_sql: depth_cache_sql,
         counter_cache_column: counter_cache_column,
         parent_cache_column: parent_cache_column,
         root_cache_column: root_cache_column,
