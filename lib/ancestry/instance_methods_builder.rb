@@ -46,7 +46,7 @@ module Ancestry
         alias has_parent? ancestors?
 
         def ancestor_ids=(value)
-          write_attribute(:#{column}, #{format_module}.generate(value))
+          write_attribute("#{column}", #{format_module}.generate(value))
           #{"ancestry_sync_parent_cache(#{parent_cache_column.inspect}, value)" if parent_cache_column || parent_association}
           #{"ancestry_sync_root_cache(#{root_cache_column.inspect}, value)" if root_cache_column || root_association}
         end
@@ -61,19 +61,19 @@ module Ancestry
         end
 
         def ancestor_ids_in_database
-          #{format_module}.#{parse_method}(attribute_in_database(:#{column}))
+          #{format_module}.#{parse_method}(attribute_in_database("#{column}"))
         end
 
         def ancestor_ids_before_last_save
-          #{format_module}.#{parse_method}(attribute_before_last_save(:#{column}))
+          #{format_module}.#{parse_method}(attribute_before_last_save("#{column}"))
         end
 
         def parent_id_in_database
-          #{format_module}.#{parse_method}(attribute_in_database(:#{column})).last
+          #{format_module}.#{parse_method}(attribute_in_database("#{column}")).last
         end
 
         def parent_id_before_last_save
-          #{format_module}.#{parse_method}(attribute_before_last_save(:#{column})).last
+          #{format_module}.#{parse_method}(attribute_before_last_save("#{column}")).last
         end
 
         # optimization - better to go directly to column and avoid parsing
@@ -84,7 +84,7 @@ module Ancestry
         def child_ancestry
           raise(Ancestry::AncestryException, I18n.t("ancestry.no_child_for_new_record")) if new_record?
 
-          #{format_module}.child_ancestry_value(attribute_in_database(:#{column}), id)
+          #{format_module}.child_ancestry_value(attribute_in_database("#{column}"), id)
         end
 
         def child_ancestry_before_last_save
@@ -92,11 +92,11 @@ module Ancestry
             raise Ancestry::AncestryException, I18n.t("ancestry.no_child_for_new_record")
           end
 
-          #{format_module}.child_ancestry_value(attribute_before_last_save(:#{column}), id)
+          #{format_module}.child_ancestry_value(attribute_before_last_save("#{column}"), id)
         end
 
         def ancestry_changed?
-          !!(will_save_change_to_attribute?(:#{column}) || saved_change_to_attribute?(:#{column}))
+          !!(will_save_change_to_attribute?("#{column}") || saved_change_to_attribute?("#{column}"))
         end
 
         def sane_ancestor_ids?
@@ -332,7 +332,7 @@ module Ancestry
           <<~RUBY
             def ancestry_depth_of_descendants
               return if new_record? || (respond_to?(:previously_new_record?) && previously_new_record?)
-              validate_depth_of_descendants(:#{depth_cache_column}, self.class.ancestry_depth_change(attribute_in_database(:#{column}), read_attribute("#{column}")))
+              validate_depth_of_descendants(:#{depth_cache_column}, self.class.ancestry_depth_change(attribute_in_database("#{column}"), read_attribute("#{column}")))
             end
           RUBY
         else
