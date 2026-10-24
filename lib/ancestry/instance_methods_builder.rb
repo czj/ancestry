@@ -127,7 +127,7 @@ module Ancestry
         end
 
         def depth
-          ancestor_ids.size
+          #{format_module}.depth(read_attribute(:#{column}))
         end
 
         def is_root?
