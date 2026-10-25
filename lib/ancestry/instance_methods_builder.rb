@@ -532,7 +532,7 @@ module Ancestry
         end
 
         def ancestry_depth_change(old_value, new_value)
-          #{format_module}.#{parse_method}(new_value).size - #{format_module}.#{parse_method}(old_value).size
+          #{format_module}.depth(new_value) - #{format_module}.depth(old_value)
         end
 
         def ancestry_primary_key_format

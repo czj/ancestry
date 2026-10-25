@@ -20,11 +20,7 @@ module Ancestry
     end
 
     def self.parse_integer(obj)
-      return [] if obj.nil? || obj == root
-
-      ids = obj.split(DELIMITER)
-      ids.shift
-      ids.map!(&:to_i)
+      parse(obj).map!(&:to_i)
     end
 
     # "/1/2/3/" → 3
