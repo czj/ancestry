@@ -63,6 +63,7 @@ class DepthCachingTest < ActiveSupport::TestCase
       root = roots.first.first
       self_join = "INNER JOIN #{model.table_name} AS same_nodes ON same_nodes.id = #{model.table_name}.id"
       assert_equal 2, root.descendants(:at_depth => 1).joins(self_join).count
+      assert_equal 4, model.at_depth(1).joins(self_join).count
     end
   end
 

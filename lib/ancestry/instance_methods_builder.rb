@@ -529,9 +529,17 @@ module Ancestry
           @ancestry_depth_sql ||= #{format_module}.construct_depth_sql(table_name, #{column.inspect})
         end
 
-        def ancestry_depth_scope_sql
-          #{depth_cache_sql ? %(@ancestry_depth_scope_sql ||= "\#{table_name}.#{depth_cache_sql}") : "ancestry_depth_sql"}
-        end
+        #{ if depth_cache_sql
+          <<~RUBY
+            def ancestry_depth_scope_sql
+              @ancestry_depth_scope_sql ||= "\#{table_name}.#{depth_cache_sql}"
+            end
+          RUBY
+        else
+          <<~RUBY
+            alias ancestry_depth_scope_sql ancestry_depth_sql
+          RUBY
+        end}
 
         def generate_ancestry(ancestor_ids)
           #{format_module}.generate(ancestor_ids)
