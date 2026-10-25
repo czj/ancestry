@@ -530,7 +530,7 @@ module Ancestry
         end
 
         def ancestry_depth_scope_sql
-          #{depth_cache_sql ? depth_cache_sql.inspect : "ancestry_depth_sql"}
+          #{depth_cache_sql ? %(@ancestry_depth_scope_sql ||= "\#{table_name}.#{depth_cache_sql}") : "ancestry_depth_sql"}
         end
 
         def generate_ancestry(ancestor_ids)
